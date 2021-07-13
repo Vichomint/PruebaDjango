@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+			crossorigin="anonymous"
+		/>
+		<title>Document</title>
+		<style>
+			body {
+				background: #e4e4e4;
+			}
+			.tabla {
+				background: #e4e4e4;
+				width: 90;
+				max-width: 900px;
+				margin: 100px auto 0 auto;
+				border-color: rgb(156, 12, 12);
+				border-radius: 10px 10px 10px 10px;
+				box-shadow: 0 0 20px 7px rgba(0, 0, 0, 0.1);
+				border-width: 2.5px;
+				border-style: solid;
+				text-align: center;
+			}
+		</style>
+	</head>
+	<header>
+		<div class="row">
+			<div>
+				<div></div>
+			</div>
+		</div>
+	</header>
+	<body>
+		<div class="tabla">
+			<table class="table">
+				<thead>
+					<tr class="table-dark">
+						<td scope="col">Patente</td>
+						<td scope="col">Marca</td>
+						<td scope="col">Modelo</td>
+						<td scope="col">Estado</td>
+						<td scope="col">Modifiar</td>
+						<td scope="col">Eliminar</td>
+					</tr>
+				</thead>
+				{%for ve in listaVehiculos%}
+				<tr>
+					<td>{{ve.patente}}</td>
+					<td>{{ve.marca}}</td>
+					<td>{{ve.modelo}}</td>
+					<td>{{ve.estado}}</td>
+
+					<td>
+						<a href="/modificarautos/{{ve.patente}}">Modificar</a>
+					</td>
+					<td>
+						<a href="/form_del_vehiculo/{{ve.patente}}">Eliminar</a>
+					</td>
+				</tr>
+				{%endfor%}
+			</table>
+			<a href="/home"> Volver </a>
+		</div>
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+			crossorigin="anonymous"
+		></script>
+	</body>
+</html>

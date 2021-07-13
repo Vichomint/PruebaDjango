@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+	{%load static%}
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap"
+			rel="stylesheet"
+		/>
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+			crossorigin="anonymous"
+		/>
+		<link rel="stylesheet" href="Style/style.css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+		<script>
+			 $(document).ready(function(){
+			var unirest = require("unirest");
+					var req = unirest("POST", "https://nlp-translation.p.rapidapi.com/v1/translate");
+					req.headers({
+						"content-type": "application/x-www-form-urlencoded",
+						"x-rapidapi-key": "3b83edf3b0mshdf3485c5d23b23ep1b2efdjsn4a219465d79c",
+						"x-rapidapi-host": "nlp-translation.p.rapidapi.com",
+						"useQueryString": true
+					});
+					req.form({
+						"text": "Hello World",
+						"to": "es",
+						"from": "en"
+					});
+					req.end(function (res) {
+						if (res.error) throw new Error(res.error);
+						console.log(res.body);
+					});
+				})
+		</script>
+		<script>
+			function findMe(){
+				var output = document.getElementById('map');
+				// Verificar si soporta geolocalizacion
+				if (navigator.geolocation) {
+					output.innerHTML = "<p>Tu navegador soporta Geolocalizacion</p>";
+				}else{
+					output.innerHTML = "<p>Tu navegador no soporta Geolocalizacion</p>";
+				}
+				//Obtenemos latitud y longitud
+				function localizacion(posicion){
+					var latitude = posicion.coords.latitude;
+					var longitude = posicion.coords.longitude;
+					var URL = "http://api.openweathermap.org/data/2.5/weather?lat="+latitude+"&lon="+longitude+"&appid=6fada678d59ab16a617020dba11248c5";
+					$.get(URL,function(data){
+								console.log(data)
+								$.each(data.weather,function(i,item){
+									console.log(item.icon)
+									$("#map").append("<img src=http://openweathermap.org/img/wn/"+item.icon+"@2x.png alt=>")
+									$("#map").append("<p style='color:white'>Estado: "+item.description+"</p>")
+								});
+								
+								$("#map").append("<p style='color:white'>Comuna: "+data.name+"</p>")
+							})			
+				}
+				function error(){
+					output.innerHTML = "<p>No se pudo obtener tu ubicación</p>";
+				}
+				navigator.geolocation.getCurrentPosition(localizacion,error);
+			}
+		</script>
+
+		<script>
+            $(document).ready(function(){
+            function limpiarTabla() {
+					var cantFilas = $("#marcas tr").length;
+                    console.log(cantFilas);
+					var marca = $("#marcas tr");
+					for (i = 1; i<= cantFilas - 1; i++) {
+						marca[i].remove();
+					}
+				}
+                // este pedaxo de script llama por modelo
+                $("#enviar").click(function(){
+                    limpiarTabla();
+                    var modelo = $("#modelo").val();
+					var modeloinput = modelo.toUpperCase();
+					var marca = $("#marca").val();
+                    var url = "https://vpic.nhtsa.dot.gov/api/vehicles/getmodelsformake/"+marca+"?format=json";
+                        
+                    $.get(url,function(data){
+                            $.each(data.Results, function(i,item){
+                                var ModeloApi = item.Model_Name;
+								var modelomayu = ModeloApi.toUpperCase();
+								console.log(modelomayu);
+								console.log(modeloinput);
+								if(modelomayu == modeloinput){
+									$("#marcas").append("<tr> <td> "+ item.Make_ID + " </td> <td> "+ item.Make_Name + " </td> <td> "+ item.Model_Name + " </td></tr>")
+
+
+								}
+                                //$("#marca").append("<tr> <td> "+ item.Make_ID + " </td> <td> "+ item.Make_Name + " </td> <td> "+ item.Model_Name + " </td></tr>")
+                                
+                            })
+                        })
+                    })       
+            })
+            
+        </script>
+		<title>Cotizar</title>
+	</head>
+	
+	<header class="page-head">
+		<img
+			class="logo"
+			src="img/Recurso1.svg"
+			alt="Logo"
+			width="100"
+			height="50"
+		/>
+		<nav class="navbar navbar-expand-lg">
+		<div class="clima">
+			<div class="row">
+				<div class="cot col-md-8">
+					<h1 style="color:white;">Clima</h>
+					<button type="button" class="btn btn-light" onclick="findMe()">Mostrar ubicación</button>
+					<div id="map">
+
+					</div>
+				</div>
+			</div>
+		</nav>
+		<nav class="navbar navbar-expand-lg">
+			<button
+				class="navbar-toggler"
+				type="button"
+				data-toggle="collapse"
+				data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent"
+				aria-expanded="false"
+				aria-label="Toggle navigation"
+			>
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item">
+						<a href="index.html">Home</a>
+					</li>
+					<li class="nav-item">
+						<a href="Cotizar.html">Cotizar</a>
+					</li>
+					<li class="nav-item">
+						<a href="Trabajos.html">Trabajos</a>
+					</li>
+					<li class="nav-item">
+						<a href="Contactos.html">Contacto</a>
+					</li>
+					<li class="nav-item">
+						<form class="form-inline my-2 my-lg-0">
+							<input
+								class="form-control mr-sm-2"
+								type="search"
+								placeholder="Search"
+								aria-label="Search"
+							/>
+							<button
+								class="btn btn-outline-secondary my-2 my-sm-0"
+								type="submit"
+							>
+								Buscar
+							</button>
+						</form>
+					</li>
+				</ul>
+			</div>
+		</nav>
+	</header>
+	<body>
+		<div class="page-Cotizar" style="margin-top: 50px">
+			<div class="row">
+				<div class="cot col-md-4">
+					<div class="contenido">
+						<h2>Reparacion completa</h2>
+						<img
+							src="img/reparacion.png"
+							alt="completo"
+							width="250"
+							height="200"
+						/>
+					</div>
+				</div>
+				<div class="cot col-md-4">
+					<div class="contenido">
+						<h2>Chequeo completo</h2>
+						<img
+							src="img/chequeo.png"
+							alt="completo"
+							width="250"
+							height="200"
+						/>
+					</div>
+				</div>
+				<div class="cot col-md-4">
+					<div class="contenido">
+						<h2>Reparación de frenos</h2>
+						<img src="img/frenos.png" alt="completo" width="250" height="200" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="page-Cotizar" style="margin-top: 50px">
+			<div class="row">
+				<div class="cot col-md-4">
+					<div class="contenido">
+						<h2>Cambio de aceite</h2>
+						<img src="img/aceite.png" alt="completo" width="250" height="200" />
+					</div>
+				</div>
+				<div class="cot col-md-4">
+					<div class="contenido">
+						<h2>Mecánico a domicilio</h2>
+						<img
+							src="img/mecanico.png"
+							alt="completo"
+							width="250"
+							height="200"
+						/>
+					</div>
+				</div>
+				<div class="cot col-md-4">
+					<div class="contenido">
+						<h2>Importación de piezas</h2>
+						<img src="img/partes.png" alt="completo" width="250" height="200" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container-f" style="margin-top: 50px">
+			<div class="row">
+				<div class="cot col-md-12">
+					<datalist id="listamodelos">
+						<option value="Hyundai">
+						<option value="bmw">
+						<option value="tesla">
+						<option value="caterpillar">
+					</datalist>
+			
+					<div class="container">
+						<div class="row">
+							<h4>Ingresa la marca de vehiculo</h4>
+						</div>
+						<div class="row">
+							<input type="text" class="form-control mb-2"  id="marca"  >
+							<input type="text" class="form-control mb-2"  id="modelo">
+							<button type="button" class="btn btn-primary" id="enviar">
+								Consultar
+							</button>
+						</div>
+						<div class="row">
+							<table class="table" id="marcas">
+								<thead>
+									<tr>
+										<th scope="col">#</th>
+										<th scope="col">Marca</th>
+										<th scope="col">modelo</th>
+									</tr>
+									
+									<tbody>
+									</tbody>
+								</thead>
+							</table>
+						</div>
+					</div>
+				</div>	
+			</div>
+		</div>
+
+
+
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+			crossorigin="anonymous"
+		></script>
+	</body>
+	<footer class="final">
+		<div class="container">
+			<div class="ftr">
+				<center>
+					<h1 class="letras">Ayuda</h1>
+				</center>
+				<ul class="content">
+					<li><a href="#">Trabajos</a></li>
+					<li><a href="#">Servicios</a></li>
+					<li><a href="#">Mecanicos</a></li>
+				</ul>
+			</div>
+
+			<div class="ftr">
+				<center>
+					<h1 class="letras">Contacto</h1>
+				</center>
+				<ul class="content">
+					<li><a href="#">RayoMcween@gmail.com</a></li>
+					<li><a href="#">(+56) 9999999999</a></li>
+					<li><a href="#">Radiador Springs</a></li>
+				</ul>
+			</div>
+
+			<div class="ftr">
+				<center>
+					<h1 class="letras">Redes sociales</h1>
+				</center>
+
+				<ul class="content">
+					<li><a href="#">facebook</a></li>
+					<li><a href="#">twitter</a></li>
+					<li><a href="#">instagram</a></li>
+				</ul>
+			</div>
+		</div>
+		
+		</div>
+	</footer>
+</html>

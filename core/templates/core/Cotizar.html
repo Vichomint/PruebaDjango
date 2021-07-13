@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+	{% load static %}
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+		<link rel="stylesheet" href="{% static 'core/css/style.css' %}"/>
+		<script>
+			
+			function findMe() {
+				var output = document.getElementById("map");
+				// Verificar si soporta geolocalizacion
+				if (navigator.geolocation) {
+					output.innerHTML = "<p>Tu navegador soporta Geolocalizacion</p>";
+				} else {
+					output.innerHTML = "<p>Tu navegador no soporta Geolocalizacion</p>";
+				}
+				//Obtenemos latitud y longitud
+				function localizacion(posicion) {
+					var latitude = posicion.coords.latitude;
+					var longitude = posicion.coords.longitude;
+					var URL =
+						"http://api.openweathermap.org/data/2.5/weather?lat=" +
+						latitude +
+						"&lon=" +
+						longitude +
+						"&appid=6fada678d59ab16a617020dba11248c5";
+					$.get(URL, function (data) {
+						console.log(data);
+						console.log(data.main.temp - 273.15);
+						//$.each(data.main, function(i,item){
+						//	console.log(item.temp_max);
+						//	console.log(item);
+						//})
+						$.each(data.weather, function (i, item) {
+							console.log(item.icon);
+							$("#map").append(
+								"<img src=http://openweathermap.org/img/wn/" +
+									item.icon +
+									"@2x.png alt=>"
+							);
+							$("#map").append(
+								"<p style='color:white'>Estado: " + item.description + "</p>"
+							);
+						});
+
+						$("#map").append(
+							"<p style='color:white'>Comuna: " + data.name + "</p>"
+						);
+					});
+				}
+				function error() {
+					output.innerHTML = "<p>No se pudo obtener tu ubicación</p>";
+				}
+				navigator.geolocation.getCurrentPosition(localizacion, error);
+			}
+		</script>
+
+		<script>
+			$(document).ready(function () {
+				function limpiarTabla() {
+					var cantFilas = $("#marcas tr").length;
+					console.log(cantFilas);
+					var marca = $("#marcas tr");
+					for (i = 1; i <= cantFilas - 1; i++) {
+						marca[i].remove();
+					}
+				}
+
+				// este pedaxo de script llama por modelo
+				$("#enviar").click(function () {
+					var numero = Math.trunc(Math.random() * 10);
+					limpiarTabla();
+					var modelo = $("#modelo").val();
+					var modeloinput = modelo.toUpperCase();
+					var marca = $("#marca").val();
+					var url =
+						"https://vpic.nhtsa.dot.gov/api/vehicles/getmodelsformake/" +
+						marca +
+						"?format=json";
+						
+						$("#traerListado").click(function(){
+                var  Make_ID = $("Make_ID").val();
+                var  Make_Name = $("Make_Name").val();
+				var  marca = $("marca").val();
+                //https://vpic.nhtsa.dot.gov/api/vehicles/getmodelsformake/"
+                var url = `ttps://vpic.nhtsa.dot.gov/api/vehicles/getmodelsformake/`;
+						
+
+					$.get(url, function (data) {
+						$.each(data.Results, function (i, item) {
+							console.log(item.Model_Name);
+							var str = item.Model_Name;
+							$("#listamodelos").append("<option value= " + str + ">");
+								
+						});
+						$.each(data.Results, function (i, item) {
+							var modelomayu = ModeloApi.toUpperCase();
+							console.log(modelomayu);
+							console.log(modeloinput);
+							
+							
+
+							if (modelomayu == modeloinput) {
+								if (numero >= 5) {
+									$("#marcas").append(
+										"<tr> <td> " +
+											item.Make_Name +
+											" </td> <td> " +
+											item.Model_Name +
+											" </td> <td> Disponible </td></tr>"
+									);
+								} 
+								else {
+									$("#marcas").append(
+										"<tr> <td> " +
+											item.Make_Name +
+											" </td> <td> " +
+											item.Model_Name +
+											" </td> <td> no disponible </td></tr>"
+									);
+									
+								}
+							}
+							//$("#marca").append("<tr> <td> "+ item.Make_ID + " </td> <td> "+ item.Make_Name + " </td> <td> "+ item.Model_Name + " </td></tr>")
+							function poblarTabla(url){
+                    $.get(url,function(data){
+						console.log(item.Model_Name);
+                                $("#marca").append("<tr> <td> "+ + " </td> <td> "+ item.Make_Name + " </td> <td> "+ item.Model_Name + " </td></tr>")
+                    })
+            }
+						});
+					});
+				});
+			});
+		});	
+		</script>
+		<title>Cotizar</title>
+	</head>
+	<header class="page-head">
+		<img
+			class="logo" {% static 'core/img/Recurso1.svg' %}
+			src="{% static 'core/img/Recurso1.svg' %}"
+			width="100"
+			height="50"
+		/>
+		<div class="clima">
+			<p style="color: white">Hola, {{request.session.nombre}}</p>
+		</div>
+		<nav class="navbar navbar-expand-lg">
+			<button
+				class="navbar-toggler"
+				type="button"
+				data-toggle="collapse"
+				data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent"
+				aria-expanded="false"
+				aria-label="Toggle navigation"
+			>
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item">
+						<a href="/home">Home</a>
+					</li>
+					<li class="nav-item">
+						<a href="/Cotizar">Cotizar</a>
+					</li>
+					<li class="nav-item">
+						<a href="/Trabajos">Trabajos</a>
+					</li>
+					<li class="nav-item">
+						<a href="/Contactos">Contacto</a>
+					</li>
+					<li class="nav-item">
+						<form class="form-inline my-2 my-lg-0">
+							<input
+								class="form-control mr-sm-2"
+								type="search"
+								placeholder="Search"
+								aria-label="Search"
+							/>
+							<button
+								class="btn btn-outline-secondary my-2 my-sm-0"
+								type="submit"
+							>
+								Buscar
+							</button>
+						</form>
+					</li>
+				</ul>
+			</div>
+		</nav>
+	</header>
+	<body>
+		<div class="page-Cotizar" style="margin-top: 50px">
+			<div class="row">
+				<div class="cot col-md-4">
+					<div class="contenido">
+						<h2>Reparacion completa</h2>
+						<img
+							src="{% static 'core/img/reparacion.png' %}"
+							alt="completo"
+							width="250"
+							height="200"
+						/>
+					</div>
+				</div>
+				<div class="cot col-md-4">
+					<div class="contenido">
+						<h2>Chequeo completo</h2>
+						<img
+							src="{% static 'core/img/chequeo.png' %}"
+							alt="completo"
+							width="250"
+							height="200"
+						/>
+					</div>
+				</div>
+				<div class="cot col-md-4">
+					<div class="contenido">
+						<h2>Reparación de frenos</h2>
+						<img src="{% static 'core/img/frenos.png' %}" alt="completo" width="250" height="200" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="page-Cotizar" style="margin-top: 50px">
+			<div class="row">
+				<div class="cot col-md-4">
+					<div class="contenido">
+						<h2>Cambio de aceite</h2>
+						<img src="{% static 'core/img/aceite.png' %}" alt="completo" width="250" height="200" />
+					</div>
+				</div>
+				<div class="cot col-md-4">
+					<div class="contenido">
+						<h2>Mecánico a domicilio</h2>
+						<img
+							src="{% static 'core/img/mecanico.png' %}"
+							alt="completo"
+							width="250"
+							height="200"
+						/>
+					</div>
+				</div>
+				<div class="cot col-md-4">
+					<div class="contenido">
+						<h2>Importación de piezas</h2>
+						<img src="{% static 'core/img/partes.png' %}" alt="completo" width="250" height="200" />
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	<div class="row" style="margin-bottom: 35px;margin-right: 30px;margin-left: 30px;">	
+		<div class="cot col-md-6" style="margin-top: 50px">
+			<datalist id="listamodelos">
+
+			</datalist>
+				<h4>Consulte si operamos con su vehiculo</h4>
+				<input
+					type="text"
+					class="form-control mb-2"
+					id="marca"
+					placeholder="Ingrese marca del vehiculo"
+				/>
+				<input
+					Type="text"
+					class="form-control mb-2"
+					id="modelo"
+					placeholder="Ingrese modelo del vehiculo"
+					list="listamodelos"
+				/>
+			<button type="button" class="btn btn-dark" id="traerListado">
+				Consultar
+			</button>
+		</div>
+		<div class="cot col-md-6" style="margin-top: 50px" >
+			<div>
+				<div >
+					<table class="table" id="marcas">
+						<thead>
+							<tr>
+								<th scope="col">Marca</th>
+								<th scope="col">Modelo</th>
+								<th scope="col">Estado</th>
+							</tr>
+								<tbody>
+								</tbody>
+						</thead>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>	
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+	</body>
+	<footer class="final">
+		<div class="container">
+			<div class="ftr">
+				<center>
+					<h1 class="letras">Ayuda</h1>
+				</center>
+				<ul class="content">
+					<li><a href="#">Trabajos</a></li>
+					<li><a href="#">Servicios</a></li>
+					<li><a href="#">Mecanicos</a></li>
+				</ul>
+			</div>
+
+			<div class="ftr">
+				<center>
+					<h1 class="letras">Contacto</h1>
+				</center>
+				<ul class="content">
+					<li><a href="#">RayoMcween@gmail.com</a></li>
+					<li><a href="#">(+56) 9999999999</a></li>
+					<li><a href="#">Radiador Springs</a></li>
+				</ul>
+			</div>
+
+			<div class="ftr">
+				<center>
+					<h1 class="letras">Redes sociales</h1>
+				</center>
+
+				<ul class="content">
+					<li><a href="#">facebook</a></li>
+					<li><a href="#">twitter</a></li>
+					<li><a href="#">instagram</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="clima">
+			<div class="row">
+				<div class="cot col-md-8">
+					<h1>Clima</h1>
+					<button type="button" class="btn btn-light" onclick="findMe()">
+						Mostrar ubicación
+					</button>
+					<div id="map"></div>
+				</div>
+			</div>
+		</div>
+	</footer>
+</html>

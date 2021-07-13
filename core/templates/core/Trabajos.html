@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+	{% load static %}
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+			integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+			crossorigin="anonymous"
+		/>
+		<link rel="stylesheet" href="{% static 'core/css/style.css' %}" />
+		<title>Trabajos</title>
+	</head>
+	<header class="page-head">
+		<img
+			class="logo"
+			src="{% static 'core/img/Recurso1.svg' %}"
+			alt="Logo"
+			width="100"
+			height="50"
+		/>
+		<div class="clima">
+			<p style="color: white">Hola, {{request.session.nombre}}</p>
+		</div>
+		<nav class="navbar navbar-expand-lg">
+			<button
+				class="navbar-toggler"
+				type="button"
+				data-toggle="collapse"
+				data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent"
+				aria-expanded="false"
+				aria-label="Toggle navigation"
+			>
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item">
+						<a href="/home">Home</a>
+					</li>
+					<li class="nav-item">
+						<a href="/Cotizar">Cotizar</a>
+					</li>
+					<li class="nav-item">
+						<a href="/Trabajos">Trabajos</a>
+					</li>
+					<li class="nav-item">
+						<a href="/Contactos">Contacto</a>
+					</li>
+					<li class="nav-item">
+						<form class="form-inline my-2 my-lg-0">
+							<input
+								class="form-control mr-sm-2"
+								type="search"
+								placeholder="Search"
+								aria-label="Search"
+							/>
+							<button
+								class="btn btn-outline-secondary my-2 my-sm-0"
+								type="submit"
+							>
+								Search
+							</button>
+						</form>
+					</li>
+				</ul>
+			</div>
+		</nav>
+	</header>
+	<body>
+		<div class="page-head-trabajos">
+			<h1 class="Trabajos_carta">Trabajos enfocados a autos de lujos</h1>
+			<p>
+				Bienvenidos Somos una empresa encargarda de la reparacion de autos de
+				lujo , a continuacion en nuestra pagina puede encontrar los contactos de
+				los mecanicos y toda la informacion pertinente a lo que pueda necesitar
+				los precios y cada respuesto pueden variar segun el modelo y el cambio
+				que se tenga que hacer en cada auto individualmente de momento solamente
+				nos especializamos en autos de lujo ya que a ese publico apuntamos
+				esperamos que su estadia en esta pagina sea de su agrado
+			</p>
+		</div>
+		<article class="page">
+			<div class="row">
+				<div class="container-trabajosX col-sm-12">
+					<div class="col-md-4">
+						<img
+							src="{% static 'core/img/rojo.png' %}"
+							width="250"
+							height="200"
+							style="
+								align-items: center;
+								float: left;
+								margin-top: 30px;
+								margin-bottom: 30px;
+							"
+						/>
+					</div>
+					<div class="page-text" style="padding-left: 100px">
+						<p><br />ESTADO : OPTIMO PARA UTILIZAR</p>
+						<div>
+							<p><br />MECANICO: BYRON NUÑEZ</p>
+						</div>
+						<div>
+							<p><br />MODELO:CHARGER</p>
+						</div>
+						<div>
+							<p><br />COSTO:5.000.000</p>
+						</div>
+					</div>
+				</div>
+				<div class="container-trabajosX col-sm-12">
+					<div class="col-md-4">
+						<img
+							src="{% static 'core/img/rojo-negro.png' %}"
+							width="250"
+							height="200"
+							style="
+								align-items: center;
+								float: left;
+								margin-top: 30px;
+								margin-bottom: 30px;
+							"
+						/>
+					</div>
+					<div class="page-text" style="padding-left: 100px">
+						<p><br />ESTADO : OPTIMO PARA UTILIZAR</p>
+						<div>
+							<p><br />MECANICO: MARCO ESTRADA</p>
+						</div>
+						<div>
+							<p><br />MODELO:NISSAN SKYLINE</p>
+						</div>
+						<div>
+							<p><br />COSTO:6.000.000</p>
+						</div>
+					</div>
+				</div>
+				<div class="container-trabajosX col-sm-12">
+					<div class="col-md-4">
+						<img
+							src="{% static 'core/img/negro.png' %}"
+							width="250"
+							height="200"
+							style="
+								align-items: center;
+								float: left;
+								margin-top: 30px;
+								margin-bottom: 30px;
+							"
+						/>
+					</div>
+					<div class="page-text" style="padding-left: 100px">
+						<p><br />ESTADO : OPTIMO PARA UTILIZAR</p>
+						<div>
+							<p><br />MECANICO: ALONSO SEPULVEDA</p>
+						</div>
+						<div>
+							<p><br />MODELO:MUSTANG</p>
+						</div>
+						<div>
+							<p><br />COSTO:7.000.000</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</article>
+
+		<script
+			src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+			integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+			crossorigin="anonymous"
+		></script>
+	</body>
+	<footer class="final">
+		<div class="container">
+			<div class="ftr">
+				<center>
+					<h1 class="letras">Ayuda</h1>
+				</center>
+				<ul class="content">
+					<li><a href="#">Trabajos</a></li>
+					<li><a href="#">Servicios</a></li>
+					<li><a href="#">Mecanicos</a></li>
+				</ul>
+			</div>
+
+			<div class="ftr">
+				<center>
+					<h1 class="letras">Contacto</h1>
+				</center>
+				<ul class="content">
+					<li><a href="#">RayoMcween@gmail.com</a></li>
+					<li><a href="#">(+56) 9999999999</a></li>
+					<li><a href="#">Radiador Springs</a></li>
+				</ul>
+			</div>
+
+			<div class="ftr">
+				<center>
+					<h1 class="letras">Redes sociales</h1>
+				</center>
+
+				<ul class="content">
+					<li><a href="#">facebook</a></li>
+					<li><a href="#">twitter</a></li>
+					<li><a href="#">instagram</a></li>
+				</ul>
+			</div>
+		</div>
+	</footer>
+</html>
